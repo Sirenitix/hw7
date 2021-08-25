@@ -10,6 +10,7 @@ price VARCHAR(250) DEFAULT NULL
 
 DROP TABLE if exists authors;
 create table authors (
-                             author varchar_ignorecase(50) not null,
-                             constraint fk_authorities_users foreign key(author) references books(author)
+                             id INT AUTO_INCREMENT PRIMARY KEY,
+                             firstname VARCHAR(250) NOT NULL,
+                             lastname VARCHAR(250) NOT NULL
 );

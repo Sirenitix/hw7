@@ -1,7 +1,8 @@
-package com.example.BookShop.data;
+package com.example.BookShop.entity;
 
 import lombok.*;
 import javax.persistence.*;
+
 
 @Getter
 @Setter
