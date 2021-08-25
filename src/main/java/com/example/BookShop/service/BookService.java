@@ -1,4 +1,4 @@
-package com.example.BookShop.repository;
+package com.example.BookShop.service;
 
 import com.example.BookShop.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
