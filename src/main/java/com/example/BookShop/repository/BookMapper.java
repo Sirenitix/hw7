@@ -21,9 +21,13 @@ public class BookMapper implements RowMapper<Book> {
 
     @Override
     public Book mapRow(ResultSet rs, int i) throws SQLException {
+        // получим автора из таблицы авторов по id указанной в таблице book
+        Author author = jdbcTemplate.queryForObject("select * from authors where id = ?",
+                new AuthorMapper(),
+                rs.getInt("id"));
         return new Book(
                 rs.getInt("id"),
-                rs.getString("author"),
+                author.getFirstName() +" "+ author.getLastName(),
                 rs.getString("title"),
                 rs.getString("priceOld"),
                 rs.getString("price")
