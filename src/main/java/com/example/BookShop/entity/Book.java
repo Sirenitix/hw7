@@ -3,12 +3,10 @@ package com.example.BookShop.entity;
 import lombok.*;
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@ToString
 public class Book {
     @Id
     private int id;
