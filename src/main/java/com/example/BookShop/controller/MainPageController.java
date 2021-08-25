@@ -1,6 +1,5 @@
 package com.example.BookShop.controller;
 
-import com.example.BookShop.service.BookService;
 import com.example.BookShop.service.GeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class MainPageController {
 
-    private final BookService bookService;
     private final GeneralService generalService;
 
     @Autowired
-    public MainPageController(BookService bookService, GeneralService generalService) {
-        this.bookService = bookService;
+    public MainPageController( GeneralService generalService) {
         this.generalService = generalService;
     }
 
     @GetMapping
     public String mainPage(Model model) {
-        model.addAttribute("bookData", bookService.getBookData());
+        model.addAttribute("bookData", generalService.getAllBooks());
         return "index";
     }
 

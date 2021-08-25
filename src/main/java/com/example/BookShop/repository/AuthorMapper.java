@@ -2,7 +2,6 @@ package com.example.BookShop.repository;
 
 import com.example.BookShop.entity.Author;
 import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
