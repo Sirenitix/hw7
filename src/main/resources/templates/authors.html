@@ -99,16 +99,18 @@
         <h1 class="Middle-title">Авторы
         </h1>
         <div class="Section" >
-
           <div class="Authors" >
-
+            <div class="Authors-links">
+              <a th:each="authorsMap : ${authorData}" class="Authors-link" href="#a"
+                 th:href="'#' + ${#strings.toLowerCase(authorsMap.key)}" th:text="${authorsMap.key}">
+              A</a>
+            </div>
             <div class="Authors-block">
               <div th:each="authorsMap: ${authorData}">
                 <h2 class="Authors-title"
-                    th:id="${authorsMap.key}"
+                    th:id="${#strings.toLowerCase(authorsMap.key)}"
                     th:text="${authorsMap.key}">
                 </h2>
-
                 <div class="Authors-letter">
                   <div class="Authors-item" th:each="author : ${authorsMap.value}">
                     <a
