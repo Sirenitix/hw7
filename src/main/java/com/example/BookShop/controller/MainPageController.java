@@ -20,18 +20,21 @@ public class MainPageController {
 
     @GetMapping
     public String mainPage(Model model) {
+        model.addAttribute("srchPlcholder","something");
         model.addAttribute("bookData", generalService.getAllBooks());
         return "index";
     }
 
     @GetMapping("/genres")
-    public String genresPage() {
+    public String genresPage(Model model) {
+        model.addAttribute("srchPlcholder","something");
         return "genres";
     }
 
     @GetMapping("/authors")
     public String authorsPage(Model model)
     {
+        model.addAttribute("srchPlcholder","something");
         model.addAttribute("authorData", generalService.getAlphabetAndAuthors());
         return "authors";
     }
