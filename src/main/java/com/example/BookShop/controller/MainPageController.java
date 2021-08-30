@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -31,7 +32,7 @@ public class MainPageController {
     @GetMapping("/genres")
     public String genresPage(Model model) {
         model.addAttribute("srchPlcholder","something");
-        return "genres";
+        return "genres/genres";
     }
 
 
@@ -40,17 +41,17 @@ public class MainPageController {
     {
         model.addAttribute("srchPlcholder","something");
         model.addAttribute("authorData", generalService.getAlphabetAndAuthors());
-        return "authors";
+        return "authors/authors";
     }
 
     @GetMapping("/books/recent")
     public String noveltyPage(Model model) {
-        return "recent";
+        return "books/recent";
     }
 
     @GetMapping("/books/popular")
     public String popularBooksPage(Model model) {
-        return "popular";
+        return "books/popular";
     }
 
     @GetMapping("/signin")
@@ -60,8 +61,38 @@ public class MainPageController {
 
     @GetMapping("/documents")
     public String docPage(Model model) {
-        return "signin";
+        return "documents/index";
     }
 
+    @GetMapping("/about")
+    public String aboutAppPage(Model model) {
+        return "about";
+    }
+
+    @GetMapping("/faq")
+    public String faqPage(Model model) {
+        return "faq";
+    }
+
+    @GetMapping("/contacts")
+    public String contactsPage(Model model) {
+        return "contacts";
+    }
+
+    @GetMapping("/cart")
+    public String cartPage(Model model) {
+        return "cart";
+    }
+
+    @GetMapping("/search")
+    public String searchResultsPage(Model model) {
+        return "search/index";
+    }
+
+
+    @GetMapping("/postponed")
+    public String postponedPage(Model model) {
+        return "postponed";
+    }
 
 }
