@@ -1,26 +1,28 @@
 package com.example.BookShop.controller;
 
+import com.example.BookShop.entity.Book;
 import com.example.BookShop.service.GeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class MainPageController {
 
-    private final GeneralService generalService;
 
+    private final GeneralService generalService;
 
     @Autowired
     public MainPageController(GeneralService generalService) {
         this.generalService = generalService;
     }
-
-
 
 
     @GetMapping
@@ -45,50 +47,52 @@ public class MainPageController {
     }
 
     @GetMapping("/books/recent")
-    public String noveltyPage(Model model) {
+    public String noveltyPage() {
         return "books/recent";
     }
 
+    @ModelAttribute("booksList")
+    public List<Book> bookList(){
+        return generalService.getAllBooks();
+    }
+
     @GetMapping("/books/popular")
-    public String popularBooksPage(Model model) {
+    public String popularBooksPage() {
         return "books/popular";
     }
 
     @GetMapping("/signin")
-    public String signinPage(Model model) {
+    public String signinPage() {
         return "signin";
     }
 
     @GetMapping("/documents")
-    public String docPage(Model model) {
+    public String docPage() {
         return "documents/index";
     }
 
     @GetMapping("/about")
-    public String aboutAppPage(Model model) {
+    public String aboutAppPage() {
         return "about";
     }
 
     @GetMapping("/faq")
-    public String faqPage(Model model) {
+    public String faqPage() {
         return "faq";
     }
 
     @GetMapping("/contacts")
-    public String contactsPage(Model model) {
+    public String contactsPage() {
         return "contacts";
     }
 
     @GetMapping("/cart")
-    public String cartPage(Model model) {
+    public String cartPage() {
         return "cart";
     }
 
     @GetMapping("/search")
-    public String searchResultsPage(Model model) {
-        return "search/index";
-    }
-
+    public String searchResultsPage(Model model) {return "search/index";}
 
     @GetMapping("/postponed")
     public String postponedPage(Model model) {

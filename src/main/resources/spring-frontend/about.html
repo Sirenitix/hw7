@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Тут название страницы написать</title>
+    <title>BOOKSHOP</title>
     <meta name="description" content="Описание страницы">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/assets/css/extra.min.css?v=74020866">
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <script defer src="/assets/js/scripts.min.js?v=74020866"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/js/lang.js"></script>
 </head>
 <body class="Site">
 <header class="Header"
@@ -22,8 +24,8 @@
 <div class="Middle">
     <div class="wrap">
         <main class="Middle-main">
-<!--            <ul class="breadcrumbs"-->
-<!--                th:replace="~{fragments/breadcrumb_fragment :: breadcrumps(category='О компании')}"></ul>-->
+            <ul class="breadcrumbs"
+                th:replace="~{fragments/bread_fragment :: breadcrumps(category = #{bottombar.about})}"></ul>
             <h1 class="Middle-title">О компании
             </h1>
             <article class="Article">
