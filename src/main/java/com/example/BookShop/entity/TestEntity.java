@@ -7,17 +7,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books")
-public class Book {
+@Table(name = "test_entities")
+public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String data;
 
-    @Transient
-    private String author;
-    private String title;
-    private String price_old;
-    private String price;
 
 
 }

@@ -25,8 +25,6 @@ public class GeneralService {
         this.authorRepository = authorRepository;
     }
 
-
-
     public List<Book> getAllBooks() {
         return bookRepository.getAll();
     }
@@ -41,10 +39,10 @@ public class GeneralService {
                 //сортировка через компаратор
                 .sorted(Comparator.comparing(
                                 //по имени автора
-                                Author::getFirstName)
+                                Author::getFirst_name)
                         //по фамилии
-                        .thenComparing(Author::getLastName))
+                        .thenComparing(Author::getLast_name))
                 //группируем по первой букве имени автора
-                .collect(Collectors.groupingBy((Author author) -> author.getFirstName().substring(0, 1)));
+                .collect(Collectors.groupingBy((Author author) -> author.getFirst_name().substring(0, 1)));
     }
 }

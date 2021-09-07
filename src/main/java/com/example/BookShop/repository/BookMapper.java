@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class BookMapper implements RowMapper<Book> {
 
@@ -21,16 +22,19 @@ public class BookMapper implements RowMapper<Book> {
 
     @Override
     public Book mapRow(ResultSet rs, int i) throws SQLException {
-        // получим автора из таблицы авторов по id указанной в таблице book
+//         получим автора из таблицы авторов по id указанной в таблице book
         Author author = jdbcTemplate.queryForObject("select * from authors where id = ?",
                 new AuthorMapper(),
-                rs.getInt("id"));
+                rs.getInt("author_id"));
+        assert author != null;
         return new Book(
                 rs.getInt("id"),
-                author.getFirstName() +" "+ author.getLastName(),
+                author.toString(),
                 rs.getString("title"),
-                rs.getString("priceOld"),
+                rs.getString("price_old"),
                 rs.getString("price")
         );
     }
+
+
 }
