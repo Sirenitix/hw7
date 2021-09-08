@@ -19,7 +19,7 @@ public abstract class AbstractHibernateDao<T> {
         this.clazz = clazz;
     }
 
-    public T findOne(Long id){
+    public T findOne(Integer id){
         return getSession().find(clazz,id);
     }
 

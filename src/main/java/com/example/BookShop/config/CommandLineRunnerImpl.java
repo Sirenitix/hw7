@@ -31,7 +31,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         }
 
 //        TestEntity readTestEntity = readTestEntityById(3);
-        TestEntity readTestEntity = testEntityDao.findOne(3L);
+        TestEntity readTestEntity = testEntityDao.findOne(3);
         if (readTestEntity != null){
             Logger.getLogger(CommandLineRunnerImpl.class.getSimpleName()).info(readTestEntity.toString());
         }else {
