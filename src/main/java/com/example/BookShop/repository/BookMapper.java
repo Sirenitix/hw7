@@ -29,7 +29,7 @@ public class BookMapper implements RowMapper<Book> {
         assert author != null;
         return new Book(
                 rs.getInt("id"),
-                author.toString(),
+                author,
                 rs.getString("title"),
                 rs.getString("price_old"),
                 rs.getString("price")

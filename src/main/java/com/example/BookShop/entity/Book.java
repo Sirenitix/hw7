@@ -13,8 +13,23 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Transient
-    private String author;
+//  @Transient
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private Author author;
+
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", author=" + author +
+                ", title='" + title + '\'' +
+                ", price_old='" + price_old + '\'' +
+                ", price='" + price + '\'' +
+                '}';
+    }
+
     private String title;
     private String price_old;
     private String price;

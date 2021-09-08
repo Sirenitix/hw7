@@ -39,10 +39,10 @@ public class GeneralService {
                 //сортировка через компаратор
                 .sorted(Comparator.comparing(
                                 //по имени автора
-                                Author::getFirst_name)
+                                Author::getFirstname)
                         //по фамилии
-                        .thenComparing(Author::getLast_name))
+                        .thenComparing(Author::getLastname))
                 //группируем по первой букве имени автора
-                .collect(Collectors.groupingBy((Author author) -> author.getFirst_name().substring(0, 1)));
+                .collect(Collectors.groupingBy((Author author) -> author.getFirstname().substring(0, 1)));
     }
 }
