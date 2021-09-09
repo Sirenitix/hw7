@@ -1,16 +1,16 @@
 package com.example.BookShop.controller;
 
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.service.AuthorService;
 import com.example.BookShop.service.BookService;
-import com.example.BookShop.service.GeneralService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.List;
 
 @Controller
@@ -19,24 +19,26 @@ public class MainPageController {
 
 
     private final BookService bookService;
-    private final GeneralService generalService;
+//  private final GeneralService generalService;
+    private final AuthorService authorService;
+    Logger logger = LoggerFactory.getLogger(MainPageController.class);
 
     @Autowired
-    public MainPageController(GeneralService generalService,BookService bookService) {
-        this.generalService = generalService;
+    public MainPageController(AuthorService authorService,BookService bookService) {
+        this.authorService = authorService;
         this.bookService = bookService;
     }
 
 
     @GetMapping
     public String mainPage(Model model) {
+        logger.info("Db data: " + authorService.getAlphabetAndAuthors());
         model.addAttribute("bookData", bookService.getBooksData());
         return "index";
     }
 
     @GetMapping("/genres")
     public String genresPage(Model model) {
-        model.addAttribute("srchPlcholder","something");
         return "genres/genres";
     }
 
@@ -44,8 +46,8 @@ public class MainPageController {
     @GetMapping("/authors")
     public String authorsPage(Model model)
     {
-        model.addAttribute("srchPlcholder","something");
-        model.addAttribute("authorData", generalService.getAlphabetAndAuthors());
+        model.addAttribute("authorData", authorService.getAlphabetAndAuthors() );
+
         return "authors/authors";
     }
 
@@ -56,7 +58,7 @@ public class MainPageController {
 
     @ModelAttribute("booksList")
     public List<Book> bookList(){
-        return generalService.getAllBooks();
+        return bookService.getBooksData();
     }
 
     @GetMapping("/books/popular")

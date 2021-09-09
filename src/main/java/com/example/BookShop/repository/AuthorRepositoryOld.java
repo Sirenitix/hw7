@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AuthorRepository implements ProjectRepository<Author>{
+public class AuthorRepositoryOld implements ProjectRepository<Author>{
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public AuthorRepository(JdbcTemplate jdbcTemplate) {
+    public AuthorRepositoryOld(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
