@@ -17,15 +17,26 @@ public class Author {
     private String firstname;
     private String lastname;
 
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String photo;
+
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String slug;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
 //  @JoinColumn(name = "author_id", referencedColumnName = "id")
     @OneToMany(mappedBy = "author")
     private List<Book> bookList = new ArrayList<>();
 
-    public Author(int id, String firstname, String lastname) {
+    public Author(int id, String firstname, String lastname, String photo, String slug, String description) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.photo = photo;
+        this.slug = slug;
+        this.description = description;
     }
 
     @Override

@@ -13,25 +13,36 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//  @Transient
+    //  @Transient
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
+    @Column(columnDefinition = "DATE")
+    private String pub_date;
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", author=" + author +
-                ", title='" + title + '\'' +
-                ", price_old='" + price_old + '\'' +
-                ", price='" + price + '\'' +
-                '}';
-    }
+    @Column(columnDefinition = "INT")
+    private String is_bestseller;
 
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String slug;
+
+    @Column(columnDefinition = "VARCHAR(255)")
+    private String image;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private int discount;
+
+    @Column(columnDefinition = "VARCHAR(255)")
     private String title;
+
+    @Column(columnDefinition = "VARCHAR(255)")
     private String price_old;
+
+    @Column(columnDefinition = "VARCHAR(255)")
     private String price;
 
 
