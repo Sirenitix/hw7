@@ -13,7 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import javax.persistence.EntityManagerFactory;
 
-@Configuration
+//@Configuration
 public class CommandLineRunnerImpl implements CommandLineRunner {
 
 //    EntityManagerFactory entityManagerFactory;
@@ -22,7 +22,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     TestEntityCrudRepository testEntityCrudRepository;
     BookRepository bookRepository;
 
-    @Autowired
+    //@Autowired
     public CommandLineRunnerImpl(TestEntityCrudRepository testEntityCrudRepository, BookRepository bookRepository) {
 //        this.entityManagerFactory = entityManagerFactory;
 //        this.testEntityDao = testEntityDao;
