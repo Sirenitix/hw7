@@ -19,7 +19,6 @@ public class MainPageController {
 
 
     private final BookService bookService;
-//  private final GeneralService generalService;
     private final AuthorService authorService;
     Logger logger = LoggerFactory.getLogger(MainPageController.class);
 
