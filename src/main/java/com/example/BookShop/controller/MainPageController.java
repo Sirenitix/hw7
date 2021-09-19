@@ -1,18 +1,22 @@
 package com.example.BookShop.controller;
 
+import com.example.BookShop.entity.Author;
 import com.example.BookShop.entity.Book;
 import com.example.BookShop.service.AuthorService;
 import com.example.BookShop.service.BookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
+@Api(description = "authors data")
 @Controller
 @RequestMapping("/")
 public class MainPageController {
@@ -101,6 +105,13 @@ public class MainPageController {
     @GetMapping("/postponed")
     public String postponedPage(Model model) {
         return "postponed";
+    }
+
+    @ApiOperation("method to get map of authors")
+    @ResponseBody
+    @GetMapping("/api/authors")
+    public Map<String, List<Author>> author(){
+        return authorService.getAlphabetAndAuthors();
     }
 
 }

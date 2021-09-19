@@ -5,11 +5,12 @@ import com.example.BookShop.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
+@Component
 public class BookMapper implements RowMapper<Book> {
 
     //нужен здесь т.к. авторы храняться в отдельной таблице
@@ -28,17 +29,16 @@ public class BookMapper implements RowMapper<Book> {
                 rs.getInt("author_id"));
         assert author != null;
         return new Book(
-                        rs.getInt("id"),
+                rs.getInt("id"),
                 author,
                 rs.getString("pub_date"),
                 rs.getString("is_bestseller"),
                 rs.getString("slug"),
                 rs.getString("image"),
                 rs.getString("description"),
-                rs.getInt("discount"),
                 rs.getString("title"),
-                rs.getString("price_old"),
-                rs.getString("price")
+                rs.getInt("price"),
+                rs.getDouble("discount")
                 );
     }
 

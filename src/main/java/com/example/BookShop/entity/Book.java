@@ -2,6 +2,7 @@ package com.example.BookShop.entity;
 
 import lombok.*;
 import javax.persistence.*;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
@@ -13,16 +14,15 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    //  @Transient
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
-    @Column(columnDefinition = "DATE")
-    private String pub_date;
+    @Column(name = "pub_date",columnDefinition = "DATE")
+    private Date pubDate;
 
-    @Column(columnDefinition = "INT")
-    private String is_bestseller;
+    @Column(name="is_bestseller" ,columnDefinition = "INT")
+    private String isBestseller;
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String slug;
@@ -33,17 +33,26 @@ public class Book {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(columnDefinition = "INT DEFAULT 0")
-    private int discount;
-
     @Column(columnDefinition = "VARCHAR(255)")
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(255)")
-    private String price_old;
+    @Column(name = "price", columnDefinition = "INT")
+    private int priceOld;
 
-    @Column(columnDefinition = "VARCHAR(255)")
-    private String price;
+    @Column(name = "discount",columnDefinition = "DOUBLE PRECISION")
+    private double price;
 
 
+    public Book(int id, Author author, String pubDate, String isBestseller, String slug, String image, String description, String title, int priceOld, double price) {
+        this.id = id;
+        this.author = author;
+        this.pubDate = Date.valueOf(pubDate);
+        this.isBestseller = isBestseller;
+        this.slug = slug;
+        this.image = image;
+        this.description = description;
+        this.title = title;
+        this.priceOld = priceOld;
+        this.price = price;
+    }
 }
