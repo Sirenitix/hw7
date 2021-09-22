@@ -21,7 +21,7 @@ public class SpringfoxConfig {
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 //              .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/api/*"))
+                .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
     }
