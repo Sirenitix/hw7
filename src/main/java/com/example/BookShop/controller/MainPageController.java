@@ -1,5 +1,6 @@
 package com.example.BookShop.controller;
 
+import com.example.BookShop.dao.BooksPageDto;
 import com.example.BookShop.entity.Author;
 import com.example.BookShop.entity.Book;
 import com.example.BookShop.service.AuthorService;
@@ -36,7 +37,7 @@ public class MainPageController {
     @GetMapping
     public String mainPage(Model model) {
         logger.info("Db data: " + authorService.getAlphabetAndAuthors());
-        model.addAttribute("bookData", bookService.getBooksData());
+        model.addAttribute("recommendedBooks");
         return "index";
     }
 
@@ -64,7 +65,12 @@ public class MainPageController {
         return bookService.getBooksData();
     }
 
-    @GetMapping("/books/popular")
+    @ModelAttribute("recommendedBooks")
+    public List<Book> recommendedBooks() {
+        return bookService.getPageOfRecommendedBooks(0, 6).getContent();
+    }
+
+   @GetMapping("/books/popular")
     public String popularBooksPage() {
         return "books/popular";
     }
@@ -114,4 +120,10 @@ public class MainPageController {
         return authorService.getAlphabetAndAuthors();
     }
 
+    @GetMapping("/books/recommended")
+    @ResponseBody
+    public BooksPageDto getBooksPage(@RequestParam("offset") Integer offset,
+                                     @RequestParam("limit") Integer limit) {
+        return new BooksPageDto(bookService.getPageOfRecommendedBooks(offset, limit).getContent());
+    }
 }
