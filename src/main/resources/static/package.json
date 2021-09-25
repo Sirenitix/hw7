@@ -44,5 +44,8 @@
         "vinyl-ftp": "^0.6.1"
     },
     "author": "lunpully.com",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "jquery-validation": "^1.19.3"
+    }
 }

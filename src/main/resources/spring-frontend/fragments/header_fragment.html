@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <body>
 <header class="Header" th:fragment="headerFragment">
-    <div class="Header-rowMain">
+    <div class="Header-rowMain" id="header-search">
         <div class="wrap">
             <div class="row">
                 <div class="row-block Header-logo"><a class="logo" href="/"><span class="logo-text">BOOKSHOP</span></a>
@@ -13,10 +12,11 @@
                     </div>
                     <div class="Header-search">
                         <div class="search">
-                            <form class="form form_search" action="#" method="post" data-searchlimit="20">
+                            <form class="form form_search" action="#" method="post" data-searchlimit="20" name="search-field">
                                 <input class="search-input" id="query" name="query" type="text"
                                        th:placeholder="#{topbar.placeholder}"
-                                       placeholder="Search over 30 million book titles" value=""/>
+                                       placeholder="Search over 30 million book titles"
+                                       value="" />
                                 <button class="search-button" type="submit" name="search" id="search" th:text="#{topbar.search}">Поиск
                                 </button>
                             </form>

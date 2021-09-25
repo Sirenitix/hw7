@@ -8,12 +8,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
+
 
     @Autowired
     public BookService(BookRepository bookRepository) {
@@ -52,6 +55,31 @@ public class BookService {
 
     public Page<Book> getPageOfRecommendedBooks(Integer offset, Integer limit){
         Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findAll(nextPage);
+    }
+
+    public Page<Book> getPageOfNoveltyBooks(Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findAll(nextPage);
+    }
+
+    public Page<Book> getPageOfPopularBooks(Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findAll(nextPage);
+    }
+
+    public Page<Book> getPageOfSearchResultBooks(String searchWord, Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findBookByTitleContaining(searchWord,nextPage);
+    }
+
+    public Page<Book> getPageOfNoveltyResultBooks(Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findAll(nextPage);
+    }
+
+    public Page<Book> getPageOfPopularResultBooks(Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit);
         return bookRepository.findAll(nextPage);
     }
 
