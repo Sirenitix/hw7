@@ -2,23 +2,23 @@ package com.example.BookShop.controller;
 
 import com.example.BookShop.dao.BooksPageDto;
 import com.example.BookShop.dao.SearchWordDto;
+import com.example.BookShop.dao.TagDto;
 import com.example.BookShop.entity.Author;
 import com.example.BookShop.entity.Book;
 import com.example.BookShop.service.AuthorService;
 import com.example.BookShop.service.BookService;
+import com.example.BookShop.utils.Converter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import liquibase.pro.packaged.S;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +46,7 @@ public class MainPageController {
 
     @ModelAttribute("popularBooks")
     public List<Book> popularBooks(){
+
         return bookService.getPageOfPopularBooks(0, 20).getContent();
     }
 
@@ -59,9 +60,18 @@ public class MainPageController {
         return new SearchWordDto();
     }
 
+    @ModelAttribute("tagDto")
+    public TagDto tagDto() {
+        return new TagDto();
+    }
 
     @ModelAttribute("searchResults")
     public List<Book> searchResults() {
+        return new ArrayList<>();
+    }
+
+    @ModelAttribute("booksByTag")
+    public List<Book> booksByTag() {
         return new ArrayList<>();
     }
 
@@ -80,6 +90,11 @@ public class MainPageController {
     @GetMapping("/genres")
     public String genresPage(Model model) {
         return "genres/genres";
+    }
+
+    @GetMapping("/genres/slug")
+    public String genresSlugPage(Model model) {
+        return "genres/slug";
     }
 
 
@@ -156,14 +171,29 @@ public class MainPageController {
     }
 
     @GetMapping( "/search/{searchWord}")
-    public String getSearchResults(@PathVariable(value = "searchWord", required = false) SearchWordDto searchWordDto,
-                                   Model model) {
+    public String getSearchResults(@PathVariable(value = "searchWord", required = false) SearchWordDto searchWordDto, Model model)
+    {
         model.addAttribute("searchWordDto", searchWordDto);
         model.addAttribute("sizeOfSearchResults", bookService.getBooksByTitle(searchWordDto.getExample()));
-        model.addAttribute("searchResults",
-                bookService.getPageOfSearchResultBooks(searchWordDto.getExample(), 0, 5).getContent());
-
+        model.addAttribute("searchResults", bookService.getPageOfSearchResultBooks(searchWordDto.getExample(), 0, 5).getContent());
         return "/search/index";
+    }
+
+    @GetMapping( "/tags/{tag}")
+    public String getSearchResults(@RequestParam(value="id") TagDto tagId,
+                                   @PathVariable(value = "tag") String tag, Model model)
+    {
+        model.addAttribute("tag", tag);
+        model.addAttribute("booksByTag", bookService.getPageOfTagResult(tagId.getTaggy(),0,10).getContent());
+        return "/tags/index";
+    }
+
+    @GetMapping("/books/page/tags")
+    @ResponseBody
+    public BooksPageDto getNextSearchPage(@RequestParam("offset") Integer offset,
+                                          @RequestParam("limit") Integer limit,
+                                          @RequestParam("id") TagDto tagId) {
+        return new BooksPageDto(bookService.getPageOfTagResult(tagId.getTaggy(),offset,limit).getContent());
     }
 
     @GetMapping("/search/page/{searchWord}")
@@ -176,9 +206,11 @@ public class MainPageController {
 
     @GetMapping("/books/page/recent")
     @ResponseBody
-    public BooksPageDto getNextNoveltyPage(@RequestParam("offset") Integer offset,
-                                          @RequestParam("limit") Integer limit) {
-        return new BooksPageDto(bookService.getPageOfNoveltyResultBooks( offset, limit).getContent());
+    public BooksPageDto getNextNoveltyPage(@RequestParam("from") String from,
+                                           @RequestParam("to") String to,
+                                           @RequestParam("offset") Integer offset,
+                                           @RequestParam("limit") Integer limit) throws ParseException {
+       return new BooksPageDto(bookService.getPageOfNoveltyResultBooks(from,  to, offset, limit).getContent());
     }
 
     @GetMapping("/books/page/popular")

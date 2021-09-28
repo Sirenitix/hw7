@@ -1,18 +1,26 @@
 package com.example.BookShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "books")
 @ApiModel(description = "entity representation of book")
+@TypeDef(
+        name = "list-array",
+        typeClass = ListArrayType.class
+)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +31,7 @@ public class Book {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
-    @Column(name = "pub_date",columnDefinition = "DATE")
+    @Column(name = "pubdate",columnDefinition = "DATE")
     @ApiModelProperty("publication date of the book")
     private Date pubDate;
 
@@ -57,11 +65,49 @@ public class Book {
     @ApiModelProperty("discount value for book")
     private double price;
 
+    @Column(name = "soldbooks", columnDefinition = "INT")
+    @JsonProperty("soldbooks")
+    @ApiModelProperty("number of users who bought the book.")
+    private int soldBooks;
 
-    public Book(int id, Author author, String pubDate, String isBestseller, String slug, String image, String description, String title, int priceOld, double price) {
+    @Column(name = "booksincart", columnDefinition = "INT")
+    @JsonProperty("booksincart")
+    @ApiModelProperty("Number of users with the book in the shopping cart")
+    private int booksInCart;
+
+    @Column(name = "deferredbooks", columnDefinition = "INT")
+    @JsonProperty("deferredbooks")
+    @ApiModelProperty("Number of users whose book is deferred")
+    private int deferredbooks;
+
+    @Column(name = "popularity", columnDefinition = "BIGINT")
+    @JsonProperty("popularity")
+    @ApiModelProperty("Popularity level")
+    private int popularity;
+
+    @Column(name = "rating", columnDefinition = "BIGINT")
+    @JsonProperty("rating")
+    @ApiModelProperty("Books rating")
+    private int rating;
+
+    @Column(name = "tag", columnDefinition = "INT")
+    @JsonProperty("tag")
+    @ApiModelProperty("Books tag")
+    private int tag;
+
+    @JsonProperty("tags")
+    @ApiModelProperty("Books tags")
+    @Type(type = "list-array")
+    @Column(
+            name = "tags",
+            columnDefinition = "integer[]"
+    )
+    private List<Integer> tags;
+
+    public Book(int id, Author author, Date pubDate, String isBestseller, String slug, String image, String description, String title, int priceOld, double price) {
         this.id = id;
         this.author = author;
-        this.pubDate = Date.valueOf(pubDate);
+        this.pubDate = pubDate;
         this.isBestseller = isBestseller;
         this.slug = slug;
         this.image = image;

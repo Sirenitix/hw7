@@ -4,12 +4,15 @@ import com.example.BookShop.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
+@Transactional
 @Repository
 public interface BookRepository extends JpaRepository<Book,Integer> {
 
@@ -27,13 +30,32 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     List<Book> findBooksByPriceOldIs(Integer price);
 
-    @Query("from Book where is_bestseller=1")
+    @Query("from Book where is_bestseller = 1")
     List<Book> getBestseller();
 
     @Query(value="SELECT * FROM books WHERE discount = (SELECT MAX(discount) FROM books)", nativeQuery=true)
     List<Book> getBooksWithMaxDiscount();
 
+    @Modifying
+    @Query(value="UPDATE books SET popularity=soldbooks+((7*booksincart)/10)+((4*deferredbooks)/10)", nativeQuery=true)
+    void makeBooksListByPopularity();
+
+    @Query(value="SELECT * FROM books WHERE popularity = (SELECT MAX(popularity) FROM books)", nativeQuery=true)
+    List<Book> getTheMostPopularBook();
+
+    @Query(value="SELECT * FROM books ORDER BY popularity DESC", nativeQuery=true)
+    List<Book> getBooksByPopularity();
+
+    @Query(value="SELECT * FROM books ORDER BY popularity DESC", nativeQuery=true)
+    Page<Book> getBooksByPopularity(Pageable nextPage);
+
     Page<Book> findBookByTitleContaining(String bookTitle, Pageable nextPage);
+
+    Page<Book> findBooksByTagEquals(Integer tag, Pageable nextPage);
+
+    Page<Book> findBooksByPubDateBetween(Date from, Date to, Pageable nextPage);
+
+    Page<Book> findBooksByOrderByRatingDesc(Pageable nextPage);
 
 
 

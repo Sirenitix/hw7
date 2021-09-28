@@ -49,6 +49,27 @@ public class BooksRestApiController {
         return ResponseEntity.ok(bookService.getBooksWithMaxPrice());
     }
 
+    @GetMapping("/books/the-most-popular")
+    @ApiOperation("get list of books by their popularity")
+    public ResponseEntity<List<Book>> theMostPopularBook(){
+
+        return ResponseEntity.ok(bookService.getTheMostPopularBook());
+    }
+
+    @GetMapping("/books/allbooks")
+    @ApiOperation("get all books")
+    public ResponseEntity<List<Book>> allBooks(){
+
+        return ResponseEntity.ok(bookService.getBooksData());
+    }
+
+    @GetMapping("/books/by-popularity")
+    @ApiOperation("get list of books by their popularity")
+    public ResponseEntity<List<Book>> popularBooks(){
+
+        return ResponseEntity.ok(bookService.getPopularBooks());
+    }
+
     @GetMapping("/books/bestsellsers")
     @ApiOperation("get bestseller books (which is_bestseller = 1)")
     public ResponseEntity<List<Book>> bestSellerBooks(){
