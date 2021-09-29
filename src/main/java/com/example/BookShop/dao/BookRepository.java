@@ -1,6 +1,7 @@
 package com.example.BookShop.dao;
 
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.genre.GenreEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +31,7 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     List<Book> findBooksByPriceOldIs(Integer price);
 
+
     @Query("from Book where is_bestseller = 1")
     List<Book> getBestseller();
 
@@ -57,6 +59,8 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     Page<Book> findBooksByOrderByRatingDesc(Pageable nextPage);
 
+    Page<Book> findBooksByGenreEquals(Integer genreId, Pageable nextPage);
 
-
+    @Query(value="SELECT * FROM books where genre in (SELECT id FROM genre where parent_id = ?1)", nativeQuery=true)
+    Page<Book> getParentGenre(Integer genreId, Pageable nextPage);
 }

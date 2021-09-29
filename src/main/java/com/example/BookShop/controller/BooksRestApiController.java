@@ -1,6 +1,7 @@
 package com.example.BookShop.controller;
 
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.genre.GenreEntity;
 import com.example.BookShop.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +69,13 @@ public class BooksRestApiController {
     public ResponseEntity<List<Book>> popularBooks(){
 
         return ResponseEntity.ok(bookService.getPopularBooks());
+    }
+
+    @GetMapping("/books/parent-genres")
+    @ApiOperation("get list of parent genres")
+    public ResponseEntity<List<GenreEntity>> parentGenres(){
+
+        return ResponseEntity.ok(bookService.getParentGenres());
     }
 
     @GetMapping("/books/bestsellsers")

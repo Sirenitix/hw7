@@ -104,6 +104,11 @@ public class Book {
     )
     private List<Integer> tags;
 
+    @Column(name = "genre", columnDefinition = "INT")
+    @JsonProperty("genre")
+    @ApiModelProperty("Books genre")
+    private int genre;
+
     public Book(int id, Author author, Date pubDate, String isBestseller, String slug, String image, String description, String title, int priceOld, double price) {
         this.id = id;
         this.author = author;

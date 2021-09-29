@@ -2,19 +2,19 @@ package com.example.BookShop.dao;
 
 public class TagDto {
 
-    private String taggy;
+    private String tag;
 
-    public TagDto(String taggy) {
-        this.taggy = taggy;
+    public TagDto(String tag) {
+        this.tag = tag;
     }
 
     public TagDto(){}
 
-    public int getTaggy() {
-        return Integer.parseInt(taggy);
+    public int getTag() {
+        return Integer.parseInt(tag);
     }
 
-    public void setTaggy(String taggy) {
-        this.taggy = taggy;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

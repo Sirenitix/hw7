@@ -1,8 +1,12 @@
 package com.example.BookShop.service;
 
 import com.example.BookShop.dao.BookRepository;
+import com.example.BookShop.dao.GenreRepository;
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.genre.GenreEntity;
 import com.example.BookShop.utils.Converter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.util.List;
 
@@ -18,11 +21,14 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
+    Logger logger = LoggerFactory.getLogger(BookService.class);
 
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, GenreRepository genreRepository) {
         this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
     }
 
     public List<Book> getBooksData() {
@@ -37,6 +43,10 @@ public class BookService {
 
     public List<Book> getBooksByTitle(String title){
         return bookRepository.findBooksByTitleContaining(title);
+    }
+
+    public List<GenreEntity> getParentGenres(){
+        return genreRepository.findAllByOrderByParentIdAsc();
     }
 
     public List<Book> getBooksWithPriceIsBetween(Integer min, Integer max){
@@ -106,4 +116,11 @@ public class BookService {
         return bookRepository.findBooksByTagEquals(tagId,nextPage);
     }
 
+    public Page<Book> getPageOfTag(Integer genreId, Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        if (genreId > 200){
+           return bookRepository.getParentGenre(genreId, nextPage);
+        }
+        return bookRepository.findBooksByGenreEquals(genreId, nextPage);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.BookShop.controller;
 
 import com.example.BookShop.dao.BooksPageDto;
+import com.example.BookShop.dao.GenreDto;
 import com.example.BookShop.dao.SearchWordDto;
 import com.example.BookShop.dao.TagDto;
 import com.example.BookShop.entity.Author;
@@ -10,6 +11,7 @@ import com.example.BookShop.service.BookService;
 import com.example.BookShop.utils.Converter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import liquibase.pro.packaged.S;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.Integer.parseInt;
 
 @Api(description = "authors data")
 @Controller
@@ -75,6 +79,11 @@ public class MainPageController {
         return new ArrayList<>();
     }
 
+    @ModelAttribute("booksByGenre")
+    public List<Book> booksByGenre() {
+        return new ArrayList<>();
+    }
+
     @ModelAttribute("sizeOfSearchResults")
     public List<Book> sizeOfSearchResults() {
         return new ArrayList<>();
@@ -92,11 +101,21 @@ public class MainPageController {
         return "genres/genres";
     }
 
-    @GetMapping("/genres/slug")
-    public String genresSlugPage(Model model) {
-        return "genres/slug";
+
+    @GetMapping("/books/slug")
+    public String booksSlugPage(Model model) {
+        return "books/slug";
     }
 
+    @GetMapping("/documents/slug")
+    public String documentsSlugPage(Model model) {
+        return "documents/slug";
+    }
+
+    @GetMapping("/books/author")
+    public String booksAuthorPage() {
+        return "books/author";
+    }
 
     @GetMapping("/authors")
     public String authorsPage(Model model)
@@ -104,6 +123,14 @@ public class MainPageController {
         model.addAttribute("authorData", authorService.getAlphabetAndAuthors() );
 
         return "authors/authors";
+    }
+
+    @GetMapping("/authors/{author}")
+    public String authorsPage(@PathVariable(value = "author", required = false) String  author, @RequestParam(value = "authorid") Integer id)
+    {
+        logger.info("author id:" + id);
+        logger.info("author name:" + author);
+        return "authors/slug";
     }
 
     @GetMapping("/books/recent")
@@ -121,6 +148,11 @@ public class MainPageController {
     @GetMapping("/signin")
     public String signinPage() {
         return "signin";
+    }
+
+    @GetMapping("/signup")
+    public String signupPage() {
+        return "signup";
     }
 
     @GetMapping("/documents")
@@ -180,20 +212,20 @@ public class MainPageController {
     }
 
     @GetMapping( "/tags/{tag}")
-    public String getSearchResults(@RequestParam(value="id") TagDto tagId,
+    public String getFirstTagResultsPage(@RequestParam(value="id") TagDto tagId,
                                    @PathVariable(value = "tag") String tag, Model model)
     {
         model.addAttribute("tag", tag);
-        model.addAttribute("booksByTag", bookService.getPageOfTagResult(tagId.getTaggy(),0,10).getContent());
+        model.addAttribute("booksByTag", bookService.getPageOfTagResult(tagId.getTag(),0,10).getContent());
         return "/tags/index";
     }
 
     @GetMapping("/books/page/tags")
     @ResponseBody
-    public BooksPageDto getNextSearchPage(@RequestParam("offset") Integer offset,
+    public BooksPageDto getNextTagPage(@RequestParam("offset") Integer offset,
                                           @RequestParam("limit") Integer limit,
                                           @RequestParam("id") TagDto tagId) {
-        return new BooksPageDto(bookService.getPageOfTagResult(tagId.getTaggy(),offset,limit).getContent());
+        return new BooksPageDto(bookService.getPageOfTagResult(tagId.getTag(),offset,limit).getContent());
     }
 
     @GetMapping("/search/page/{searchWord}")
@@ -220,4 +252,20 @@ public class MainPageController {
         return new BooksPageDto(bookService.getPageOfPopularResultBooks( offset, limit).getContent());
     }
 
+    @GetMapping("/books/page/genre")
+    @ResponseBody
+    public BooksPageDto getNextGenrePage(@RequestParam("offset") Integer offset,
+                                          @RequestParam("limit") Integer limit,
+                                          @RequestParam("id") TagDto tagId) {
+        return new BooksPageDto(bookService.getPageOfTag(tagId.getTag(),offset,limit).getContent());
+    }
+
+    @GetMapping("/genres/{genre}")
+    public String genresSlugPage(@RequestParam(value="id") GenreDto genreId,
+                                 @PathVariable(value = "genre") String genre, Model model) {
+        model.addAttribute("genre", genre);
+        model.addAttribute("booksByGenre", bookService.getPageOfTag(genreId.getGenre(), 0, 5).getContent());
+
+        return "genres/slug";
+    }
 }

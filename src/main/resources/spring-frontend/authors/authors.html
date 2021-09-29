@@ -16,7 +16,7 @@
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <script defer src="/assets/js/scripts.min.js?v=33498857"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="/assets/js/lang.js"></script>
+  <script src="/assets/js/scripts.js"></script>
 </head>
 <body class="Site">
 
@@ -31,7 +31,7 @@
           <div class="Authors" >
             <div class="Authors-links">
               <a th:each="authorsMap : ${authorData}" class="Authors-link" href="#a"
-                 th:href="'#' + ${#strings.toLowerCase(authorsMap.key)}" th:text="${authorsMap.key}">
+                 th:href="'#' +  ${#strings.toLowerCase(authorsMap.key)}" th:text="${authorsMap.key}">
               A</a>
             </div>
             <div class="Authors-block">
@@ -42,17 +42,15 @@
                 </h2>
                 <div class="Authors-letter">
                   <div class="Authors-item" th:each="author : ${authorsMap.value}">
-                    <a
-                            th:href="@{'/authors/'+ ${author.id}}"
+                    <a class="a-author"
+                            th:id ="${author.id}"
+                            th:href="@{'/authors/' + ${author.firstname + ' ' +author.lastname} + '?authorid=' + ${author.id} }"
                             th:text="${author.firstname + ' ' +author.lastname}"></a>
                   </div>
                 </div>
                 <br><br>
               </div>
             </div>
-
-
-
           </div>
         </div>
       </main>
