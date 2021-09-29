@@ -126,7 +126,7 @@ public class MainPageController {
     }
 
     @GetMapping("/authors/{author}")
-    public String authorsPage(@PathVariable(value = "author", required = false) String  author, @RequestParam(value = "authorid") Integer id)
+    public String authorsPage(@PathVariable(value = "author", required = false) String  author, @RequestParam(value = "id") Integer id)
     {
         logger.info("author id:" + id);
         logger.info("author name:" + author);
