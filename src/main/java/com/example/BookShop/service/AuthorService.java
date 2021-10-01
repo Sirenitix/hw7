@@ -24,4 +24,8 @@ public class AuthorService {
                 .stream().collect(Collectors.groupingBy((Author author) -> author.getFirstname().substring(0, 1)));
     }
 
+    public Author getAuthorById(Integer authorId){
+        return authorRepository.findAuthorById(authorId);
+    }
+
 }

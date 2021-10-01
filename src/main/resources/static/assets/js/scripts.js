@@ -2,9 +2,9 @@
         $("#locales").change(function(){
             var selectedOption = $("#locales").val();
             if (selectedOption === "ru") {
-                window.location.replace('?lang=' +selectedOption);
+                window.location.assign('?lang=' + selectedOption);
             }else  if (selectedOption === "en"){
-                window.location.replace('?lang=' +selectedOption);
+                window.location.assign('?lang=' + selectedOption);
         }
         })
     })

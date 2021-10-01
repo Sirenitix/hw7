@@ -54,9 +54,16 @@ public class MainPageController {
         return bookService.getPageOfPopularBooks(0, 20).getContent();
     }
 
+    @ModelAttribute("authorData")
+    public Author authorData(){
+        return new Author();
+    }
+
+
+
     @ModelAttribute("recommendedBooks")
     public List<Book> recommendedBooks() {
-        return bookService.getPageOfRecommendedBooks(0, 6).getContent();
+        return bookService.getPageOfRecommendedBooks(0, 10).getContent();
     }
 
     @ModelAttribute("searchWordDto")
@@ -68,6 +75,7 @@ public class MainPageController {
     public TagDto tagDto() {
         return new TagDto();
     }
+
 
     @ModelAttribute("searchResults")
     public List<Book> searchResults() {
@@ -112,8 +120,12 @@ public class MainPageController {
         return "documents/slug";
     }
 
-    @GetMapping("/books/author")
-    public String booksAuthorPage() {
+    @GetMapping("/books/{author}/{id}")
+    public String booksAuthorPage(@PathVariable(value = "author", required = false) String  author,
+                                  @PathVariable(value = "id") Integer id, Model model) {
+//        model.addAttribute()
+        model.addAttribute("author", author);
+        model.addAttribute("authorBooks", bookService.getBooksByAuthor(0,20,id).getContent());
         return "books/author";
     }
 
@@ -121,21 +133,21 @@ public class MainPageController {
     public String authorsPage(Model model)
     {
         model.addAttribute("authorData", authorService.getAlphabetAndAuthors() );
-
         return "authors/authors";
     }
 
-    @GetMapping("/authors/{author}")
-    public String authorsPage(@PathVariable(value = "author", required = false) String  author, @RequestParam(value = "id") Integer id)
+    @GetMapping("/authors/{author}/{id}")
+    public String authorsPage(@PathVariable(value = "author", required = false) String  author,
+                              @PathVariable(value = "id") Integer id, Model model)
     {
-        logger.info("author id:" + id);
-        logger.info("author name:" + author);
-        return "authors/slug";
+        model.addAttribute("author", author);
+        model.addAttribute("authorData",authorService.getAuthorById(id));
+        model.addAttribute("authorBooks", bookService.getBooksByAuthor(0,5,id).getContent());
+      return "authors/slug";
     }
 
     @GetMapping("/books/recent")
     public String noveltyPage() {
-
         return "books/recent";
     }
 
@@ -211,9 +223,10 @@ public class MainPageController {
         return "/search/index";
     }
 
-    @GetMapping( "/tags/{tag}")
-    public String getFirstTagResultsPage(@RequestParam(value="id") TagDto tagId,
-                                   @PathVariable(value = "tag") String tag, Model model)
+    @GetMapping( "/tags/{tag}/{id}")
+    public String getFirstTagResultsPage(@PathVariable(value = "tag") String tag,
+                                         @PathVariable(value="id") TagDto tagId,
+                                         Model model)
     {
         model.addAttribute("tag", tag);
         model.addAttribute("booksByTag", bookService.getPageOfTagResult(tagId.getTag(),0,10).getContent());
@@ -223,8 +236,8 @@ public class MainPageController {
     @GetMapping("/books/page/tags")
     @ResponseBody
     public BooksPageDto getNextTagPage(@RequestParam("offset") Integer offset,
-                                          @RequestParam("limit") Integer limit,
-                                          @RequestParam("id") TagDto tagId) {
+                                       @RequestParam("limit") Integer limit,
+                                       @RequestParam("id") TagDto tagId) {
         return new BooksPageDto(bookService.getPageOfTagResult(tagId.getTag(),offset,limit).getContent());
     }
 
@@ -255,17 +268,31 @@ public class MainPageController {
     @GetMapping("/books/page/genre")
     @ResponseBody
     public BooksPageDto getNextGenrePage(@RequestParam("offset") Integer offset,
-                                          @RequestParam("limit") Integer limit,
-                                          @RequestParam("id") TagDto tagId) {
+                                         @RequestParam("limit") Integer limit,
+                                         @RequestParam("id") TagDto tagId) {
         return new BooksPageDto(bookService.getPageOfTag(tagId.getTag(),offset,limit).getContent());
     }
 
-    @GetMapping("/genres/{genre}")
-    public String genresSlugPage(@RequestParam(value="id") GenreDto genreId,
-                                 @PathVariable(value = "genre") String genre, Model model) {
+    @GetMapping("/genres/{genre}/{id}")
+    public String genresSlugPage(@PathVariable(value = "genre") String genre,
+                                 @PathVariable(value="id") GenreDto genreId,
+                                  Model model) {
         model.addAttribute("genre", genre);
         model.addAttribute("booksByGenre", bookService.getPageOfTag(genreId.getGenre(), 0, 5).getContent());
-
         return "genres/slug";
     }
+
+    @GetMapping("/tags/all")
+    public String allTagsPage() {
+        return "tags/all";
+    }
+
+    @GetMapping("/books/page/author")
+    @ResponseBody
+    public BooksPageDto getNextAuthorsBooksPage(@RequestParam("offset") Integer offset,
+                                                @RequestParam("limit") Integer limit,
+                                                @RequestParam("id") Integer authorId) {
+        return new BooksPageDto(bookService.getBooksByAuthor(offset,limit,authorId).getContent());
+    }
+
 }

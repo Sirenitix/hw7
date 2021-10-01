@@ -8,7 +8,7 @@
   <!--meta( http-equiv="cache-control" content="no-cache")-->
   <!--meta( http-equiv="expires" content="0")-->
   <!--link(rel="preload" href="assets/css/extra.min.css?v=" + version as="style" crossorigin="anonymous")-->
-  <link href="favicon.ico" rel="shortcut icon">
+<!--  <link rel="shortcut icon" href="favicon.ico" >-->
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -36,12 +36,12 @@
     <div class="wrap">
       <main class="Middle-main">
         <ul class="breadcrumbs"
-            th:replace="~{fragments/bread_fragment :: breadcrumps(category = ${tag})}"></ul>
+            th:replace="~{fragments/bread_fragment :: breadcrumps(category = ${tag}, maincategory = #{tags})}"></ul>
         <div class="Section">
           <div class="Section-header">
             <h1 class="Section-title" th:text="${tag}">Психологическая проза
             </h1>
-            <div class="Section-header-links"><a class="Section-header-link" href="/index.html#tags">Все тэги</a>
+            <div class="Section-header-links"><a class="Section-header-link" href="/tags/all" th:text="#{tags.all}">Все тэги</a>
             </div>
           </div>
           <div class="Cards Cards_refresh">

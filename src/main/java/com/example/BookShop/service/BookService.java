@@ -1,7 +1,9 @@
 package com.example.BookShop.service;
 
+import com.example.BookShop.dao.AuthorRepository;
 import com.example.BookShop.dao.BookRepository;
 import com.example.BookShop.dao.GenreRepository;
+import com.example.BookShop.entity.Author;
 import com.example.BookShop.entity.Book;
 import com.example.BookShop.entity.genre.GenreEntity;
 import com.example.BookShop.utils.Converter;
@@ -22,13 +24,15 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
+    private final AuthorRepository authorRepository;
     Logger logger = LoggerFactory.getLogger(BookService.class);
 
 
     @Autowired
-    public BookService(BookRepository bookRepository, GenreRepository genreRepository) {
+    public BookService(BookRepository bookRepository, GenreRepository genreRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
     }
 
     public List<Book> getBooksData() {
@@ -39,6 +43,11 @@ public class BookService {
 
     public List<Book> getBooksByAuthor(String authorName){
         return bookRepository.findBooksByAuthorFirstnameContaining(authorName);
+    }
+
+    public Page<Book> getBooksByAuthor(Integer offset, Integer limit,Integer authorId){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findBooksByAuthorId(authorId, nextPage);
     }
 
     public List<Book> getBooksByTitle(String title){
@@ -88,7 +97,7 @@ public class BookService {
     }
 
     public Page<Book> getPageOfPopularBooks(Integer offset, Integer limit){
-        bookRepository.makeBooksListByPopularity();;
+        bookRepository.makeBooksListByPopularity();
         Pageable nextPage = PageRequest.of(offset,limit);
         return bookRepository.getBooksByPopularity(nextPage);
     }
@@ -123,4 +132,6 @@ public class BookService {
         }
         return bookRepository.findBooksByGenreEquals(genreId, nextPage);
     }
+
+
 }

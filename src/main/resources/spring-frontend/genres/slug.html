@@ -8,7 +8,7 @@
   <!--meta( http-equiv="cache-control" content="no-cache")-->
   <!--meta( http-equiv="expires" content="0")-->
   <!--link(rel="preload" href="assets/css/extra.min.css?v=" + version as="style" crossorigin="anonymous")-->
-  <link href="favicon.ico" rel="shortcut icon">
+<!--  <link href="favicon.ico" rel="shortcut icon">-->
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Light.woff2" as="font" crossorigin="anonymous">
   <link rel="preload" href="/assets/fonts/Montserrat/Montserrat-Medium.woff2" as="font" crossorigin="anonymous">
@@ -36,7 +36,7 @@
     <div class="wrap">
       <main class="Middle-main">
         <ul class="breadcrumbs"
-            th:replace="~{fragments/bread_fragment :: breadcrumps(category = ${genre})}"></ul>
+            th:replace="~{fragments/bread_fragment :: breadcrumps(category = ${genre} ,maincategory = #{topbar.genres})}"></ul>
         <header class="Middle-header">
           <h1 class="Middle-title" th:text="${genre}">Детективы
           </h1>

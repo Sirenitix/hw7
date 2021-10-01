@@ -5,7 +5,9 @@
     </li>
     <li class="breadcrumbs-item"><a th:href="@{/genres}" href="/genres/index.html" th:text="#{topbar.books}">Книги</a>
     </li>
-    <li class="breadcrumbs-item breadcrumbs-item_current" th:text="${category}"><span>Новинки</span>
+    <li class="breadcrumbs-item breadcrumbs-item_current" th:text="${maincategory}"><span>Тэги</span>
+    </li>
+    <li class="breadcrumbs-item breadcrumbs-item_current" th:text="${category}"><span>modern literature</span>
     </li>
 </ul>
 </html>
