@@ -122,7 +122,7 @@ public class BookService {
 
     public Page<Book> getPageOfTagResult(Integer tagId, Integer offset, Integer limit){
         Pageable nextPage = PageRequest.of(offset,limit);
-        return bookRepository.findBooksByTagEquals(tagId,nextPage);
+        return bookRepository.findBooksByTagsEquals(tagId,nextPage);
     }
 
     public Page<Book> getPageOfTag(Integer genreId, Integer offset, Integer limit){

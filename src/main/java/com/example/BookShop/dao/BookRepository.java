@@ -52,7 +52,8 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     Page<Book> findBookByTitleContaining(String bookTitle, Pageable nextPage);
 
-    Page<Book> findBooksByTagEquals(Integer tag, Pageable nextPage);
+    @Query(value="SELECT * FROM books where ?1 = any(tags) ", nativeQuery=true)
+    Page<Book> findBooksByTagsEquals(Integer tag, Pageable nextPage);
 
     Page<Book> findBooksByPubDateBetween(Date from, Date to, Pageable nextPage);
 

@@ -80,7 +80,7 @@ public class Book {
     @ApiModelProperty("Number of users whose book is deferred")
     private int deferredbooks;
 
-    @Column(name = "popularity", columnDefinition = "BIGINT")
+    @Column(name = "popularity", columnDefinition = "BIGINT DEFAULT 0")
     @JsonProperty("popularity")
     @ApiModelProperty("Popularity level")
     private int popularity;
@@ -89,11 +89,6 @@ public class Book {
     @JsonProperty("rating")
     @ApiModelProperty("Books rating")
     private int rating;
-
-    @Column(name = "tag", columnDefinition = "INT")
-    @JsonProperty("tag")
-    @ApiModelProperty("Books tag")
-    private int tag;
 
     @JsonProperty("tags")
     @ApiModelProperty("Books tags")

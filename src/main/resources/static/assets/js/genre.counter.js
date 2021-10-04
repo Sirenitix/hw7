@@ -6,11 +6,9 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(data) {
 
-            let index;
+            let easy_r = 0;
             let arr = [];
             let parentChilds = 0;
-            let midParent = 0;
-            let defaultIndex = 201;
             let parentIndex = 201;
             let index_counter = 0;
             const map = new Map();
@@ -55,35 +53,29 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(parent) {
 
-                    for (let i = 1; i < 6; i ++) {
+                    for (let i = 0; i < 5; i ++) {
 
                         jQuery.each(parent, function (keyP, valueP) {
                             for (const [keyM, valueM] of mapAsc) {
                                 if (valueP.id === keyM && parentIndex === valueP.parentId) {
                                     parentChilds += valueM;
-                                    if(i === 1){
-                                        midParent += valueM;
-                                        console.log(valueM);
-                                    }
-
                                 }
                             }
 
                         });
+                            if(i > 1) {
+                                $("#" + parentIndex).html($("#" + parentIndex).text() + "(" + parentChilds + ")");
+                                parentChilds = 0;
+                            }else if (i === 1){
+                                $("#" + parentIndex).html($("#" + parentIndex).text() + "(" + (parentChilds - easy_r) + ")");
+                                $("#" + (parentIndex - 1)).html($("#" + (parentIndex - 1)).text() + "(" + parentChilds + ")");
+                                parentChilds = 0
+                            }else {
+                                easy_r = parentChilds;
+                            }
+                             ++parentIndex;
 
-                        if (i === 2){
-                            midParent = midParent - 25;
-                            $("#" + defaultIndex).html($("#" + defaultIndex).text() + "(" + parentChilds + ")");
-                            $("#" + parentIndex).html($("#" + parentIndex).text() + "(" + midParent + ")");
-                        }
-                        if (parentIndex > 202) {
-                            $("#" + parentIndex).html($("#" + parentIndex).text() + "(" + parentChilds + ")");
-                        }
-                        ++parentIndex;
 
-                        if(i === 2 || i > 2){
-                            parentChilds = 0;
-                        }
 
                     }
 
