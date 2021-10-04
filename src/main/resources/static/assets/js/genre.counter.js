@@ -1,7 +1,6 @@
 $(document).ready(function() {
     $.ajax({
         url: 'http://localhost:8085/api/books/allbooks',
-
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -12,7 +11,6 @@ $(document).ready(function() {
             let parentIndex = 201;
             let index_counter = 0;
             const map = new Map();
-
 
             jQuery.each(data, function (key, value) {
                 const index = index_counter++;
@@ -34,7 +32,6 @@ $(document).ready(function() {
                 return b.length - a.length;
             });
 
-
             // console.log(grouped);
 
             grouped.forEach(function (value, i){
@@ -43,7 +40,6 @@ $(document).ready(function() {
             });
 
             var mapAsc = new Map([...map.entries()].sort());
-
 
 
             $.ajax({

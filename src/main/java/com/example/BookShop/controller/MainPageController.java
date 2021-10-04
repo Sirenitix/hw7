@@ -123,7 +123,7 @@ public class MainPageController {
     @GetMapping("/books/{author}/{id}")
     public String booksAuthorPage(@PathVariable(value = "author", required = false) String  author,
                                   @PathVariable(value = "id") Integer id, Model model) {
-//        model.addAttribute()
+//      model.addAttribute()
         model.addAttribute("author", author);
         model.addAttribute("authorBooks", bookService.getBooksByAuthor(0,20,id).getContent());
         return "books/author";
