@@ -8,61 +8,52 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional
 @Repository
 public interface BookRepository extends JpaRepository<Book,Integer> {
 
-    List<Book> findBooksByAuthor_Firstname(String name);
-
     @Query("from Book")
     List<Book> customFindAllBooks();
 
-    //New Rest Repository
-    List<Book> findBooksByAuthorFirstnameContaining(String authorFirstName);
+    List<Book> findBooksByTitleContainingIgnoreCase(String bookTitle);
 
-    List<Book> findBooksByTitleContaining(String bookTitle);
+    List<Book> findBooksByPriceIsBetween(Integer min, Integer max);
 
-    List<Book> findBooksByPriceOldIsBetween(Integer min, Integer max);
+    List<Book> findBooksByPriceIs(Integer price);
 
-    List<Book> findBooksByPriceOldIs(Integer price);
+    @Query(value="SELECT * FROM book ORDER BY pub_date DESC", nativeQuery=true)
+    Page<Book> getBooks(Pageable nextPage);
 
 
-    @Query("from Book where is_bestseller = 1")
-    List<Book> getBestseller();
-
-    @Query(value="SELECT * FROM books WHERE discount = (SELECT MAX(discount) FROM books)", nativeQuery=true)
+    @Query(value="SELECT * FROM book WHERE discount = (SELECT MAX(discount) FROM books)", nativeQuery=true)
     List<Book> getBooksWithMaxDiscount();
 
-    @Modifying
-    @Query(value="UPDATE books SET popularity=soldbooks+((7*booksincart)/10)+((4*deferredbooks)/10)", nativeQuery=true)
-    void makeBooksListByPopularity();
+    @Query(value="SELECT * FROM book ORDER BY (soldbooks+((7*booksincart)/10)+((4*deferredbooks)/10)) DESC", nativeQuery=true)
+    Page<Book> getTheMostPopularBook(Pageable nextPage);
 
-    @Query(value="SELECT * FROM books WHERE popularity = (SELECT MAX(popularity) FROM books)", nativeQuery=true)
-    List<Book> getTheMostPopularBook();
-
-    @Query(value="SELECT * FROM books ORDER BY popularity DESC", nativeQuery=true)
+    @Query(value="SELECT * FROM book ORDER BY (soldbooks+((7*booksincart)/10)+((4*deferredbooks)/10)) DESC", nativeQuery=true)
     List<Book> getBooksByPopularity();
 
-    @Query(value="SELECT * FROM books ORDER BY popularity DESC", nativeQuery=true)
-    Page<Book> getBooksByPopularity(Pageable nextPage);
+    Page<Book> findBooksByTitleContainingIgnoreCase(String bookTitle, Pageable nextPage);
 
-    Page<Book> findBookByTitleContaining(String bookTitle, Pageable nextPage);
-
-    @Query(value="SELECT * FROM books where ?1 = any(tags) ", nativeQuery=true)
+    @Query(value="SELECT * FROM book where id in (SELECT book_id FROM book2tag where tag_id = ?1) ", nativeQuery=true)
     Page<Book> findBooksByTagsEquals(Integer tag, Pageable nextPage);
 
-    Page<Book> findBooksByPubDateBetween(Date from, Date to, Pageable nextPage);
+    @Query(value="SELECT * FROM book where pub_date BETWEEN ?1 AND ?2 ORDER BY pub_date ASC ", nativeQuery=true)
+    Page<Book> getBooksByPubDateBetween(LocalDate pubDateFrom, LocalDate pubDateTo, Pageable pageable);
 
-    Page<Book> findBooksByOrderByRatingDesc(Pageable nextPage);
+    @Query(value="SELECT * FROM book WHERE is_bestseller = 1", nativeQuery=true)
+    Page<Book> getBooksByPopularity(Pageable nextPage); // by popularity
 
-    Page<Book> findBooksByGenreEquals(Integer genreId, Pageable nextPage);
+    Page<Book> findBooksByIdEquals(Integer genreId, Pageable nextPage); // by genre
 
-    @Query(value="SELECT * FROM books where genre in (SELECT id FROM genre where parent_id = ?1)", nativeQuery=true)
+    @Query(value="SELECT * FROM book where genre in (SELECT id FROM genre where id = ?1)", nativeQuery=true)
     Page<Book> getParentGenre(Integer genreId, Pageable nextPage);
 
-    Page<Book> findBooksByAuthorId(Integer authorId, Pageable nextPage);
+    @Query(value="SELECT * FROM book WHERE id in (SELECT book_id FROM book2author WHERE author_id = ?1)", nativeQuery=true)
+    Page<Book> getBooksByAuthorId(Integer authorId, Pageable nextPage); //by author id
 }

@@ -1,69 +1,63 @@
 package com.example.BookShop.entity;
 
+import com.example.BookShop.entity.book.review.BookReview;
+import com.example.BookShop.entity.book.tag.Tag;
+import com.example.BookShop.entity.genre.Genre;
+import com.example.BookShop.entity.user.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vladmihalcea.hibernate.type.array.ListArrayType;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "books")
-@ApiModel(description = "entity representation of book")
-@TypeDef(
-        name = "list-array",
-        typeClass = ListArrayType.class
-)
+@Table(name = "book")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("generate id automatically in db")
-    private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    private Author author;
-
-    @Column(name = "pubdate",columnDefinition = "DATE")
-    @ApiModelProperty("publication date of the book")
-    private Date pubDate;
-
-    @Column(name="is_bestseller" ,columnDefinition = "INT")
-    @ApiModelProperty("if isBestseller = 1 so the book is considered to be bestseller and  if 0 the book is not a " + "bestseller")
-    private String isBestseller;
-
-    @Column(columnDefinition = "VARCHAR(255)")
-    @ApiModelProperty("mnemonical identity sequence of characters")
-    private String slug;
-
-    @Column(columnDefinition = "VARCHAR(255)")
-    @ApiModelProperty("image url")
-    private String image;
+    @Column(columnDefinition = "INT NOT NULL AUTO_INCREMENT")
+//  id книги
+    private Integer id;
 
     @Column(columnDefinition = "TEXT")
-    @ApiModelProperty("text which contains a description of the book")
+//  описание книги
     private String description;
 
+    @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
+//  скидка в процентах или 0, если её нет
+    private Integer discount;
+
     @Column(columnDefinition = "VARCHAR(255)")
-    @ApiModelProperty("book title")
+//  изображение обложки
+    private String image;
+
+    @Column(name = "is_bestseller",
+            columnDefinition = "SMALLINT NOT NULL")
+//  книга очень популярна, является бестселлером
+    private String isBestseller;
+
+    @Column(columnDefinition = "INT NOT NULL")
+//  цена в рублях основная
+    private Integer price;
+
+    @Column(name = "pub_date", columnDefinition = "DATE NOT NULL")
+//  дата публикации
+    private LocalDate pubDate;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+//  мнемонический идентификатор книги
+    private String slug;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+//  название книги
     private String title;
-
-    @Column(name = "price", columnDefinition = "INT")
-    @JsonProperty("price")
-    @ApiModelProperty("book price without discount")
-    private int priceOld;
-
-    @Column(name = "discount",columnDefinition = "DOUBLE PRECISION")
-    @JsonProperty("discount")
-    @ApiModelProperty("discount value for book")
-    private double price;
 
     @Column(name = "soldbooks", columnDefinition = "INT")
     @JsonProperty("soldbooks")
@@ -80,40 +74,75 @@ public class Book {
     @ApiModelProperty("Number of users whose book is deferred")
     private int deferredbooks;
 
-    @Column(name = "popularity", columnDefinition = "BIGINT DEFAULT 0")
-    @JsonProperty("popularity")
-    @ApiModelProperty("Popularity level")
-    private int popularity;
+    @ManyToMany
+    @JoinTable(name = "book2author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+//  список авторов данной книги
+    private List<Author> authors;
 
-    @Column(name = "rating", columnDefinition = "BIGINT")
-    @JsonProperty("rating")
-    @ApiModelProperty("Books rating")
-    private int rating;
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "book2genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+//  список жанров к которым относится данная книга
+    private List<Genre> genres;
 
-    @JsonProperty("tags")
-    @ApiModelProperty("Books tags")
-    @Type(type = "list-array")
-    @Column(
-            name = "tags",
-            columnDefinition = "integer[]"
-    )
-    private List<Integer> tags;
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "book2tag",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+//  список тэгов к которым относится данная книга
+    private List<Tag> tags;
 
-    @Column(name = "genre", columnDefinition = "INT")
-    @JsonProperty("genre")
-    @ApiModelProperty("Books genre")
-    private int genre;
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "book2user",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//  список пользователей имеющих связь с данной книгой
+    private List<UserEntity> users;
 
-    public Book(int id, Author author, Date pubDate, String isBestseller, String slug, String image, String description, String title, int priceOld, double price) {
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "file_download",
+            joinColumns = {@JoinColumn(name = "book_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+//  список пользователей скачавших данную книгу
+    private List<UserEntity> usersDownloadedBooks;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "balance_transaction",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//  список пользователей имеющих транзакции с книгой (списание или зачисление)
+    private List<UserEntity> usersBalanceTransactions;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(name = "book_review",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//  список пользователей оставивших отзывы о книге
+    private List<UserEntity> usersBookReviews;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "book")
+//  список отзывов данной книги
+    private List<BookReview> bookReviewList;
+
+    public Book(int id, List<Author> authors,String isBestseller, String slug, String image, String description, String title, int price, int discount) {
         this.id = id;
-        this.author = author;
-        this.pubDate = pubDate;
+        this.authors = authors;
         this.isBestseller = isBestseller;
         this.slug = slug;
         this.image = image;
         this.description = description;
         this.title = title;
-        this.priceOld = priceOld;
         this.price = price;
+        this.discount = discount;
     }
 }

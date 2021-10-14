@@ -3,14 +3,15 @@ package com.example.BookShop.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Converter {
 
-    java.sql.Date sqlDateFormat;
+    LocalDate dateFormat;
 
-    public java.sql.Date getDateType() {
-        return sqlDateFormat;
+    public LocalDate getDateType() {
+        return dateFormat;
     }
 
     public Converter(String givenString) throws ParseException {
@@ -18,6 +19,6 @@ public class Converter {
         SimpleDateFormat properFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date utilDateFormat = currentFormat.parse(givenString);
         String formattedString = properFormat.format(utilDateFormat);
-        sqlDateFormat = java.sql.Date.valueOf(formattedString);
+        dateFormat = LocalDate.parse(formattedString);
     }
 }

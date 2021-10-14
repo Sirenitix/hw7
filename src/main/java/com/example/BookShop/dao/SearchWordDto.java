@@ -14,6 +14,7 @@ public class SearchWordDto {
     public SearchWordDto(){}
 
     public String getExample() {
+
         return example;
     }
 

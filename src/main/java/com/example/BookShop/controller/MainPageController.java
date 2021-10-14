@@ -6,6 +6,7 @@ import com.example.BookShop.dao.SearchWordDto;
 import com.example.BookShop.dao.TagDto;
 import com.example.BookShop.entity.Author;
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.book.tag.Tag;
 import com.example.BookShop.service.AuthorService;
 import com.example.BookShop.service.BookService;
 import com.example.BookShop.utils.Converter;
@@ -59,8 +60,6 @@ public class MainPageController {
         return new Author();
     }
 
-
-
     @ModelAttribute("recommendedBooks")
     public List<Book> recommendedBooks() {
         return bookService.getPageOfRecommendedBooks(0, 10).getContent();
@@ -76,6 +75,10 @@ public class MainPageController {
         return new TagDto();
     }
 
+    @ModelAttribute("tags")
+    public List<Tag> tags() {
+        return bookService.getTags();
+    }
 
     @ModelAttribute("searchResults")
     public List<Book> searchResults() {
@@ -99,8 +102,8 @@ public class MainPageController {
 
     @GetMapping
     public String mainPage(Model model) {
-        logger.info("Db data: " + authorService.getAlphabetAndAuthors());
         model.addAttribute("recommendedBooks");
+        model.addAttribute("tags");
         return "index";
     }
 
@@ -125,7 +128,7 @@ public class MainPageController {
                                   @PathVariable(value = "id") Integer id, Model model) {
 //      model.addAttribute()
         model.addAttribute("author", author);
-        model.addAttribute("authorBooks", bookService.getBooksByAuthor(0,20,id).getContent());
+        model.addAttribute("authorBooks", bookService.getBooksByAuthor(0,5,id).getContent());
         return "books/author";
     }
 

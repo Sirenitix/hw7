@@ -20,8 +20,7 @@ public class AuthorService {
     }
 
     public Map<String, List<Author>> getAlphabetAndAuthors() {
-        return authorRepository.findAll(Sort.by(Sort.Direction.ASC, "lastname"))
-                .stream().collect(Collectors.groupingBy((Author author) -> author.getFirstname().substring(0, 1)));
+        return authorRepository.findAll().stream().collect(Collectors.groupingBy((Author author) -> author.getName().substring(0, 1)));
     }
 
     public Author getAuthorById(Integer authorId){

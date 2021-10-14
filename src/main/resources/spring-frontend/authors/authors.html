@@ -44,8 +44,8 @@
                   <div class="Authors-item" th:each="author : ${authorsMap.value}">
                     <a class="a-author"
                             th:id ="${author.id}"
-                            th:href="@{'/authors/' + ${author.firstname + ' ' +author.lastname} + '/' + ${author.id} }"
-                            th:text="${author.firstname + ' ' +author.lastname}"></a>
+                            th:href="@{'/authors/' + ${author.name} + '/' + ${author.id} }"
+                            th:text="${author.name}"></a>
                   </div>
                 </div>
                 <br><br>

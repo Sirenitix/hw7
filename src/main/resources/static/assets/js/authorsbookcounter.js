@@ -14,7 +14,7 @@ $(document).ready(function() {
             let index_counter = 0;
 
             jQuery.each(data, function (key, value) {
-                if(parseInt(value.author.id) === parseInt(authorId)){
+                if(parseInt(value.authors[0].id) === parseInt(authorId)){
                     const index = index_counter++;
                     arr[index] = parseInt(value.id);
                     }

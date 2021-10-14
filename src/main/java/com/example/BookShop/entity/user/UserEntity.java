@@ -1,65 +1,71 @@
 package com.example.BookShop.entity.user;
 
+import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.book.review.BookReviewLike;
+import com.example.BookShop.entity.book.review.Message;
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
+
+@Data
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_entity")
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+//  идентификатор пользователя
+    private Integer id;
+
+    @Column(columnDefinition = "INT NOT NULL DEFAULT 0")
+//  баланс личного счёта, по умолчанию 0
+    private Integer balance;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+//  хэш пользователя, используемый для внешней идентификации пользователя с целью скрытия его ID
     private String hash;
 
-    @Column(columnDefinition = "TIMESTAMP NOT NULL")
-    private LocalDateTime regTime;
-
-    @Column(columnDefinition = "INT NOT NULL")
-    private int balance;
-
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+//  имя пользователя
     private String name;
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "reg_time", columnDefinition = "TIMESTAMP NOT NULL")
+//  дата и время регистрации
+    private LocalDateTime regTime;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToMany(mappedBy = "users")
+//  список книг имеющих связь с данным пользователем
+    private Set<Book> books;
 
-    public String getHash() {
-        return hash;
-    }
+    @ManyToMany(mappedBy = "usersDownloadedBooks")
+//  список книг скаченных пользователем
+    private Set<Book> downloadedBooks;
 
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
+    @ManyToMany(mappedBy = "usersBalanceTransactions")
+//  список книг имеющих транзакции с пользователем
+    private Set<Book> booksBalanceTransactions;
 
-    public LocalDateTime getRegTime() {
-        return regTime;
-    }
+    @ManyToMany(mappedBy = "usersBookReviews")
+//  список книг о которых пользователь оставил отзывы
+    private Set<Book> booksReviews;
 
-    public void setRegTime(LocalDateTime regTime) {
-        this.regTime = regTime;
-    }
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//  контакты пользователя
+    private UserContact userContact;
 
-    public int getBalance() {
-        return balance;
-    }
+    @OneToMany(mappedBy = "user")
+//  Список отзывов на которые оставлены лайк или дизлайк
+    private Set<BookReviewLike>
+            bookReviewLike;
 
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "user")
+//  Список сообщений отправленных пользователем
+    private Set<Message> message;
 }

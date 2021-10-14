@@ -1,7 +1,9 @@
 package com.example.BookShop.controller;
 
 import com.example.BookShop.entity.Book;
-import com.example.BookShop.entity.genre.GenreEntity;
+import com.example.BookShop.entity.book.links.Book2Tag;
+import com.example.BookShop.entity.book.tag.Tag;
+import com.example.BookShop.entity.genre.Genre;
 import com.example.BookShop.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,16 +28,17 @@ public class BooksRestApiController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books/by-author")
-    @ApiOperation("operation to get list of books by passed author first name")
-    public ResponseEntity<List<Book>> booksByAuthor(@RequestParam("author") String authorName){
-        return ResponseEntity.ok(bookService.getBooksByAuthor(authorName));
-    }
 
     @GetMapping("/books/by-title")
     @ApiOperation("get books by book title")
     public ResponseEntity<List<Book>> booksByTitle(@RequestParam("title") String title){
         return ResponseEntity.ok(bookService.getBooksByTitle(title));
+    }
+
+    @GetMapping("/books/by-tag")
+    @ApiOperation("get books by book title")
+    public ResponseEntity<List<Book2Tag>> booksByTag(){
+        return ResponseEntity.ok(bookService.getTagsId());
     }
 
     @GetMapping("/books/by-price-range")
@@ -50,13 +53,6 @@ public class BooksRestApiController {
         return ResponseEntity.ok(bookService.getBooksWithMaxPrice());
     }
 
-    @GetMapping("/books/the-most-popular")
-    @ApiOperation("get list of books by their popularity")
-    public ResponseEntity<List<Book>> theMostPopularBook(){
-
-        return ResponseEntity.ok(bookService.getTheMostPopularBook());
-    }
-
     @GetMapping("/books/allbooks")
     @ApiOperation("get all books")
     public ResponseEntity<List<Book>> allBooks(){
@@ -64,16 +60,10 @@ public class BooksRestApiController {
         return ResponseEntity.ok(bookService.getBooksData());
     }
 
-    @GetMapping("/books/by-popularity")
-    @ApiOperation("get list of books by their popularity")
-    public ResponseEntity<List<Book>> popularBooks(){
-
-        return ResponseEntity.ok(bookService.getPopularBooks());
-    }
 
     @GetMapping("/books/parent-genres")
     @ApiOperation("get list of parent genres")
-    public ResponseEntity<List<GenreEntity>> parentGenres(){
+    public ResponseEntity<List<Genre>> parentGenres(){
 
         return ResponseEntity.ok(bookService.getParentGenres());
     }
