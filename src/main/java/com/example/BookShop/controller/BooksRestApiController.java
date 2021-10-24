@@ -1,6 +1,7 @@
 package com.example.BookShop.controller;
 
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.book.links.Book2Genre;
 import com.example.BookShop.entity.book.links.Book2Tag;
 import com.example.BookShop.entity.book.tag.Tag;
 import com.example.BookShop.entity.genre.Genre;
@@ -60,12 +61,19 @@ public class BooksRestApiController {
         return ResponseEntity.ok(bookService.getBooksData());
     }
 
+    @GetMapping("/books/booktogenre")
+    @ApiOperation("get genre ids'")
+    public ResponseEntity<List<Book2Genre>> bookToGenre(){
 
-    @GetMapping("/books/parent-genres")
-    @ApiOperation("get list of parent genres")
-    public ResponseEntity<List<Genre>> parentGenres(){
+        return ResponseEntity.ok(bookService.getBooksGenreId());
+    }
 
-        return ResponseEntity.ok(bookService.getParentGenres());
+
+    @GetMapping("/books/genres")
+    @ApiOperation("get list of genres")
+    public ResponseEntity<List<Genre>> allGenres(){
+
+        return ResponseEntity.ok(bookService.getGenres());
     }
 
     @GetMapping("/books/bestsellsers")

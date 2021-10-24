@@ -23,8 +23,6 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     List<Book> findBooksByPriceIsBetween(Integer min, Integer max);
 
-    List<Book> findBooksByPriceIs(Integer price);
-
     @Query(value="SELECT * FROM book ORDER BY pub_date DESC", nativeQuery=true)
     Page<Book> getBooks(Pageable nextPage);
 
@@ -49,11 +47,10 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
     @Query(value="SELECT * FROM book WHERE is_bestseller = 1", nativeQuery=true)
     Page<Book> getBooksByPopularity(Pageable nextPage); // by popularity
 
-    Page<Book> findBooksByIdEquals(Integer genreId, Pageable nextPage); // by genre
-
-    @Query(value="SELECT * FROM book where genre in (SELECT id FROM genre where id = ?1)", nativeQuery=true)
-    Page<Book> getParentGenre(Integer genreId, Pageable nextPage);
-
     @Query(value="SELECT * FROM book WHERE id in (SELECT book_id FROM book2author WHERE author_id = ?1)", nativeQuery=true)
     Page<Book> getBooksByAuthorId(Integer authorId, Pageable nextPage); //by author id
+
+    @Query(value="SELECT * FROM book where id in (SELECT book_id FROM book2genre where genre_id in (SELECT id FROM genre WHERE path LIKE ?1))", nativeQuery=true)
+    Page<Book>  getBooksByIdContains(String genreId, Pageable nextPage); // by genre
+
 }

@@ -17,28 +17,27 @@ $(document).ready(function() {
 
             arr.sort();
 
-            let grouped = arr.reduce((r, v, i, a) => {
-                if (v === a[i - 1]) {
-                    r[r.length - 1].push(v);
-                } else {
-                    r.push(v === a[i + 1] ? [v] : v);
+            let grouped = arr.reduce(function(r, i) {
+                if (typeof r.last === 'undefined' || r.last !== i) {
+                    r.last = i;
+                    r.arr.push([]);
                 }
+                r.arr[r.arr.length - 1].push(i);
                 return r;
-            }, []);
+            }, {arr: []}).arr;
 
             grouped.sort(function (a, b) {
                 return b.length - a.length;
             });
 
-            const n = 1
+            const n = 1;
             const results = new Array(Math.ceil(grouped.length / n))
                 .fill()
                 .map(_ => grouped.splice(0, n))
 
             results.forEach(function (value) {
-                if(value[0].length !== undefined){
+                    console.log(value[0]);
                     set.add(value[0].length)
-                }
             });
 
             set.forEach(function (value) {
@@ -47,14 +46,7 @@ $(document).ready(function() {
 
             avg = setElements / set.size;
 
-
-
             results.forEach(function (value) {
-
-                if( value[0].length === undefined ){
-                    $("#" + (value[0])).attr("class", "Tag Tag_xs");
-                    console.log(value);
-                }
 
                 if( value[0].length < (avg / 2) && value[0].length !== undefined ){
                     $("#" + (value[0][0])).attr("class", "Tag Tag_xs");

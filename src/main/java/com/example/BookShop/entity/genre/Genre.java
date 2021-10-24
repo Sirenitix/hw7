@@ -28,20 +28,12 @@ public class Genre {
     private String name;
 
     @Column(columnDefinition = "VARCHAR(255) NOT NULL")
+//  наименование жанра
+    private String path;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL")
 //  мнемонический код жанра, используемый в ссылках на страницу данного жанра
     private String slug;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "parent_id",
-            columnDefinition = "INT DEFAULT NULL")
-//  идентификатор родительского жанра или NULL, если жанр является корневым
-    private Genre parentGenre;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "parentGenre")
-//  список под жанров данного жанра
-    private List<Genre> subGenreList;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "genres")

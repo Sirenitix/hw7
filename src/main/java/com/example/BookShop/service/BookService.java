@@ -1,10 +1,8 @@
 package com.example.BookShop.service;
 
-import com.example.BookShop.dao.Book2TagRepository;
-import com.example.BookShop.dao.BookRepository;
-import com.example.BookShop.dao.GenreRepository;
-import com.example.BookShop.dao.TagRepository;
+import com.example.BookShop.dao.*;
 import com.example.BookShop.entity.Book;
+import com.example.BookShop.entity.book.links.Book2Genre;
 import com.example.BookShop.entity.book.links.Book2Tag;
 import com.example.BookShop.entity.book.tag.Tag;
 import com.example.BookShop.entity.genre.Genre;
@@ -28,15 +26,17 @@ public class BookService {
     private final GenreRepository genreRepository;
     private final TagRepository tagRepository;
     private final Book2TagRepository book2TagRepository;
+    private final Book2GenreRepository book2GenreRepository;
     Logger logger = LoggerFactory.getLogger(BookService.class);
 
 
     @Autowired
-    public BookService(BookRepository bookRepository, GenreRepository genreRepository, TagRepository tagRepository, Book2TagRepository book2TagRepository) {
+    public BookService(BookRepository bookRepository, GenreRepository genreRepository, TagRepository tagRepository, Book2TagRepository book2TagRepository, Book2GenreRepository book2GenreRepository) {
         this.bookRepository = bookRepository;
         this.genreRepository = genreRepository;
         this.tagRepository = tagRepository;
         this.book2TagRepository = book2TagRepository;
+        this.book2GenreRepository = book2GenreRepository;
     }
 
     public List<Book> getBooksData() {
@@ -58,7 +58,7 @@ public class BookService {
 
     public List<Book2Tag> getTagsId(){ return book2TagRepository.findAllByOrderById();}
 
-    public List<Genre> getParentGenres(){
+    public List<Genre> getGenres(){
         return genreRepository.findAllByOrderByIdAsc();
     }
 
@@ -66,15 +66,9 @@ public class BookService {
         return bookRepository.findBooksByPriceIsBetween(min,max);
     }
 
-    public List<Book> getBooksWithPrice(Integer price){
-        return bookRepository.findBooksByPriceIs(price);
-    }
-
     public List<Book> getBooksWithMaxPrice(){
         return bookRepository.getBooksWithMaxDiscount();
     }
-
-
 
     public List<Book> getBestseller(){
         return bookRepository.getBooksByPopularity();
@@ -119,11 +113,13 @@ public class BookService {
 
     public Page<Book> getPageOfTag(Integer genreId, Integer offset, Integer limit){
         Pageable nextPage = PageRequest.of(offset,limit);
-        if (genreId > 200){
-           return bookRepository.getParentGenre(genreId, nextPage);
-        }
-        return bookRepository.findBooksByIdEquals(genreId, nextPage);
+        String genreIdString = "%." + genreId + ".%";
+        logger.info(genreIdString);
+        return bookRepository.getBooksByIdContains(genreIdString, nextPage);
     }
 
 
+    public List<Book2Genre> getBooksGenreId() {
+        return book2GenreRepository.findAllByOrderById();
+    }
 }

@@ -23,10 +23,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: parent_id
-                  remarks: идентификатор родительского жанра или NULL, если жанр является корневым
-                  type: INT
-                  defaultValue: NULL
+                  name: path
+                  remarks: путь до данного жанра
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: slug
                   remarks: мнемонический код жанра, используемый в ссылках на страницу данного жанра

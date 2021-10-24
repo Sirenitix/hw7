@@ -1,6 +1,6 @@
-insert into book2genre (id, book_id, genre_id) values (1, 10, 13);
-insert into book2genre (id, book_id, genre_id) values (2, 34, 31);
-insert into book2genre (id, book_id, genre_id) values (3, 9, 35);
+insert into book2genre (id, book_id, genre_id) values (1, 10, 54);
+insert into book2genre (id, book_id, genre_id) values (2, 34, 60);
+insert into book2genre (id, book_id, genre_id) values (3, 9, 57);
 insert into book2genre (id, book_id, genre_id) values (4, 47, 10);
 insert into book2genre (id, book_id, genre_id) values (5, 96, 29);
 insert into book2genre (id, book_id, genre_id) values (6, 69, 22);
