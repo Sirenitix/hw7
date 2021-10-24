@@ -9,24 +9,18 @@ import com.example.BookShop.entity.Book;
 import com.example.BookShop.entity.book.tag.Tag;
 import com.example.BookShop.service.AuthorService;
 import com.example.BookShop.service.BookService;
-import com.example.BookShop.utils.Converter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import liquibase.pro.packaged.S;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Integer.parseInt;
 
 @Api(description = "authors data")
 @Controller

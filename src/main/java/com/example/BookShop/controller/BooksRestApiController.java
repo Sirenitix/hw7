@@ -3,7 +3,6 @@ package com.example.BookShop.controller;
 import com.example.BookShop.entity.Book;
 import com.example.BookShop.entity.book.links.Book2Genre;
 import com.example.BookShop.entity.book.links.Book2Tag;
-import com.example.BookShop.entity.book.tag.Tag;
 import com.example.BookShop.entity.genre.Genre;
 import com.example.BookShop.service.BookService;
 import io.swagger.annotations.Api;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RequestMapping("/api")

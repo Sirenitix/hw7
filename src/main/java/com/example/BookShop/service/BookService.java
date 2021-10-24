@@ -43,7 +43,6 @@ public class BookService {
         return bookRepository.customFindAllBooks();
     }
 
-    //New methods
 
     public Page<Book> getBooksByAuthor(Integer offset, Integer limit,Integer authorId){
         Pageable nextPage = PageRequest.of(offset,limit);

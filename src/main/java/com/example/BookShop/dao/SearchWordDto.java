@@ -1,7 +1,5 @@
 package com.example.BookShop.dao;
 
-import javax.validation.constraints.NotEmpty;
-
 public class SearchWordDto {
 
 

@@ -1,9 +1,8 @@
-package com.example.BookShop.repository;
+package com.example.BookShop.dao;
 
 import com.example.BookShop.entity.Author;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
