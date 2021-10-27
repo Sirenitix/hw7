@@ -30,7 +30,7 @@ databaseChangeLog:
               - column:
                   name: image
                   remarks: изображение обложки
-                  type: VARCHAR(50)
+                  type: VARCHAR(255)
               - column:
                   name: is_bestseller
                   remarks: книга очень популярна, является бестселлером

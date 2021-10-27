@@ -38,7 +38,7 @@ public class BookMapper implements RowMapper<Book> {
         return new Book(
                 rs.getInt("id"),
                 authorData,
-                rs.getString("isBestseller"),
+                rs.getInt("isBestseller"),
                 rs.getString("slug"),
                 rs.getString("image"),
                 rs.getString("description"),

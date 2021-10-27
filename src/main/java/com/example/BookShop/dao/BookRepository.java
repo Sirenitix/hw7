@@ -42,7 +42,7 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
     @Query(value="SELECT * FROM book where pub_date BETWEEN ?1 AND ?2 ORDER BY pub_date ASC ", nativeQuery=true)
     Page<Book> getBooksByPubDateBetween(LocalDate pubDateFrom, LocalDate pubDateTo, Pageable pageable);
 
-    @Query(value="SELECT * FROM book WHERE is_bestseller = 1", nativeQuery=true)
+    @Query(value="SELECT * FROM book where is_bestseller = 1", nativeQuery=true)
     Page<Book> getBooksByPopularity(Pageable nextPage); // by popularity
 
     @Query(value="SELECT * FROM book WHERE id in (SELECT book_id FROM book2author WHERE author_id = ?1)", nativeQuery=true)
@@ -51,4 +51,5 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
     @Query(value="SELECT * FROM book where id in (SELECT book_id FROM book2genre where genre_id in (SELECT id FROM genre WHERE path LIKE ?1))", nativeQuery=true)
     Page<Book>  getBooksByIdContains(String genreId, Pageable nextPage); // by genre
 
+    Book findBookBySlug(String slug);
 }

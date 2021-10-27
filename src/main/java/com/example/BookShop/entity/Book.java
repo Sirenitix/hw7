@@ -41,7 +41,7 @@ public class Book {
     @Column(name = "is_bestseller",
             columnDefinition = "SMALLINT NOT NULL")
 //  книга очень популярна, является бестселлером
-    private String isBestseller;
+    private Integer isBestseller;
 
     @Column(columnDefinition = "INT NOT NULL")
 //  цена в рублях основная
@@ -134,7 +134,12 @@ public class Book {
 //  список отзывов данной книги
     private List<BookReview> bookReviewList;
 
-    public Book(int id, List<Author> authors,String isBestseller, String slug, String image, String description, String title, int price, int discount) {
+    @JsonProperty
+    public Integer discountPrice() {
+        return price - Math.toIntExact(Math.round(price * ((float)discount / 100)));
+    }
+
+    public Book(int id, List<Author> authors,Integer isBestseller, String slug, String image, String description, String title, int price, int discount) {
         this.id = id;
         this.authors = authors;
         this.isBestseller = isBestseller;
